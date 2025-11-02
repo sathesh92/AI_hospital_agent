@@ -55,7 +55,32 @@ if uploaded_file is not None:
 
 else:
     st.warning("Please upload a PDF or image file to continue.")
+# ---------- TEXT INPUT ----------
+st.markdown("### Or paste hospital form text below:")
+user_text = st.text_area("Paste text here", height=200)
+if st.button("Process Text"):
+    if user_text.strip():
+        with st.spinner("🤖 Running AI pipeline on text... please wait ⏳"):
+            try:
+                result = hospital_agent(user_text, is_text=True)
+            except Exception as e:
+                st.error(f"⚠️ Error processing text: {e}")
+                result = None
 
+        if result:
+            if "error" in result:
+                st.error(result["error"])
+            else:
+                st.success("🎉 AI Processing Complete!")
+                with st.expander("📜 Extracted Text (from OCR)", expanded=False):
+                    st.text(result["extracted_text"])
+                with st.expander("🧠 Extracted Fields (Structured Data)", expanded=True):
+                    st.json(result["fields"])
+                st.markdown("---")
+                st.subheader("🤖 AI Summary")
+                st.write(result["ai_summary"])
+    else:
+        st.warning("Please enter some text to process.")
 # Footer
 st.markdown("---")
 st.markdown("**Developed by Sathesh Kumar — TCS AI Friday Project 🚀**")

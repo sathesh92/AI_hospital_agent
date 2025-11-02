@@ -37,16 +37,19 @@ LLM_CONFIG = {
     "max_tokens": 150,
     "prompt_template": """
 You are an AI hospital assistant.
-Your task is to create a summary of the patient's hospital appointment using the extracted entities below.
+Your task is to process appointment requests and confirmations using the extracted entities below.
 Use ONLY the provided information - do not add, modify, or substitute any details.
 
 Extracted Information:
 {entities}
 
-Write a summary exactly in this format, using only the information provided:
-"Patient [PATIENT] has an appointment with [DOCTOR] in the [DEPARTMENT] department on [DATE] at [TIME] at [HOSPITAL]. Token number: [TOKEN]"
+If the user is requesting to book an appointment, confirm the booking in a friendly, natural way, e.g.:
+\"Appointment booked for Patient [PATIENT] with [DOCTOR] in the [DEPARTMENT] department on [DATE] at [TIME] at [HOSPITAL]. Token number: [TOKEN]\"
 
-IMPORTANT: Use the exact values from the entities, do not make up or substitute any information."""
+If the user is asking for a summary, provide a summary in this format:
+\"Patient [PATIENT] has an appointment with [DOCTOR] in the [DEPARTMENT] department on [DATE] at [TIME] at [HOSPITAL]. Token number: [TOKEN]\"
+
+IMPORTANT: Use the exact values from the entities, do not make up or substitute any information. If any field is missing, mention it as 'not provided'."""
 }
 
 # Error Handling Configuration
